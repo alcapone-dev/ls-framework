@@ -55,7 +55,7 @@ RegisterCommand('ensureInv', function(source)
     TriggerEvent("ls:GetCharacterData", src, function(results)
     --MySQL.Async.fetchAll('DELETE FROM disc_inventory WHERE data = @data AND owner = @owner',{['@data'] = "null",['@owner'] = owner})
     exports["externalsql"]:DBAsyncQuery({
-            string = "DELETE FROM `inventory` WHERE `data` = `:data` AND `owner` = `@charid`",
+            string = "DELETE FROM `inventory` WHERE `data` = `data:` AND `owner` = `charid:`",
             data = {
                 data = "null",
                 owner = results.char_id

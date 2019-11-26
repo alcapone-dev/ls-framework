@@ -1,5 +1,5 @@
 local players = {}
-local characters = {}
+characters = {}
 
 
 AddEventHandler('playerConnecting', function(playerName, setKickReason, deferrals)
@@ -68,12 +68,13 @@ AddEventHandler("ls:AddPlayerToTable", function()
                   steamID = PlayerIdentifier("steam", src)
               }
           }, function(playerResults)
+            print("mysql > "..json.encode(playerResults))
 
     local playerid = playerResults.data[1].steamID
 	  table.insert(players, {id = src, playerid = playerid})
 
     loadInventory(playerid, 'player', function()
-      
+
     end)
 
     end)
@@ -90,8 +91,10 @@ AddEventHandler("ls:AddPlayerCharacterToTable", function()
                 steamID = PlayerIdentifier("steam", src)
             }
         }, function(character)
+          print("mysql > "..json.encode(character))
 
-      table.insert(characters, {id = src, character_id = character.data[1].id, account_id = character.data[1].account_id})
+      --table.insert(characters, {id = src, character_id = character.data[1].id, account_id = character.data[1].account_id})
+      table.insert(characters, {id = src, account_id = character.data[1].account_id, character_id = character.data[1].id})
 
 
     end)
@@ -129,8 +132,11 @@ RegisterServerEvent("debug:printTables")
 AddEventHandler('debug:printTables', function(source)
 
  local src = source
+ print(GetPlayerCharacters(src))
+ print(GetActiveCharacter(src))
  print("Players Table: \t"..json.encode(players).."\n")
  print("Characters Table: \t"..json.encode(characters).."\n")
+
 
 end)
 

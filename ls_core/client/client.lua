@@ -17,6 +17,24 @@ RegisterCommand('print', function(source)
 
 end, false)
 
+RegisterCommand('cb', function(source)
+
+  TriggerServerEvent("ls:GetCharacterData", function(source, callback)
+  print(characters[a].id )
+
+  end)
+  end, false)
+
+RegisterCommand('fff', function(source)
+
+    local source = GetPlayerServerId()
+    print('gowno')
+    TriggerServerEvent("ls:debugCharacters", source)
+
+end, false)
+
+
+
 
 ---------------------------------------------------------------------------
 --- Core Functions

@@ -20,7 +20,8 @@ server_scripts {
 
 client_scripts {
 	'client/client.lua',
-	'client/spawn.lua'
+	'client/spawn.lua',
+  'client/functions.lua'
 
 }
 
