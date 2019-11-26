@@ -1,4 +1,5 @@
 local players = {}
+local characters = {}
 
 
 AddEventHandler('playerConnecting', function(playerName, setKickReason, deferrals)
@@ -71,8 +72,30 @@ AddEventHandler("ls:AddPlayerToTable", function()
     local playerid = playerResults.data[1].steamID
 	  table.insert(players, {id = src, playerid = playerid})
 
+    loadInventory(playerid, 'player', function()
+      
+    end)
+
     end)
 end)
+
+RegisterServerEvent("ls:AddPlayerCharacterToTable")
+AddEventHandler("ls:AddPlayerCharacterToTable", function()
+
+  local src = source
+
+  exports["externalsql"]:DBAsyncQuery({
+            string = "SELECT * FROM `characters` WHERE `account_id` = :steamID",
+            data = {
+                steamID = PlayerIdentifier("steam", src)
+            }
+        }, function(character)
+
+      table.insert(characters, {id = src, character_id = character.data[1].id, account_id = character.data[1].account_id})
+
+
+    end)
+  end)
 
 --------------------------------
 ---------GetPlayerData----------
@@ -88,6 +111,15 @@ AddEventHandler("ls:GetPlayerData", function(id, callback)
     callback(false)
 end)
 
+AddEventHandler("ls:GetCharacterData", function(id, callback)
+	for a = 1, #characters do
+        if characters[a].id == id then
+			  callback(characters[a])
+			return
+        end
+    end
+    callback(false)
+end)
 
 -----------------------------
 ------DEBUGS-----------------
@@ -98,6 +130,7 @@ AddEventHandler('debug:printTables', function(source)
 
  local src = source
  print("Players Table: \t"..json.encode(players).."\n")
+ print("Characters Table: \t"..json.encode(characters).."\n")
 
 end)
 
@@ -115,6 +148,12 @@ AddEventHandler("playerDropped", function(reason)
   for i, playerid in pairs(players) do
     table.remove(players, i)
   end
+
+  for i, playerid in pairs(characters) do
+    table.remove(characters, i)
+  end
+
+  saveInventory(playerid, 'player')
 
   print('LS-Story > Gracz '..playerName..'(ID:'..src..') wyszedl, powod: '..reason)
 
