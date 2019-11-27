@@ -1,12 +1,12 @@
 RegisterCommand('search', function(source, args, raw)
-    TriggerClientEvent('disc-inventoryhud:search', source)
+    TriggerClientEvent('inventory:search', source)
 end)
 
 RegisterCommand('steal', function(source, args, raw)
-    TriggerClientEvent('disc-inventoryhud:steal', source)
+    TriggerClientEvent('inventory:steal', source)
 end)
 
-ESX.RegisterServerCallback('disc-inventoryhud:getIdentifier', function(source, cb, serverid)
+RegisterServerCallback('inventory:getIdentifier', function(source, cb, serverid)
     cb(ESX.GetPlayerFromId(serverid).identifier)
 end)
 

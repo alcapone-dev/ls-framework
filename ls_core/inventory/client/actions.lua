@@ -3,12 +3,12 @@ RegisterNUICallback('UseItem', function(data)
         currentWeaponSlot = data.slot
     end
     print('Close ' .. tostring(data.item.closeUi))
-    TriggerServerEvent('disc-inventoryhud:notifyImpendingRemoval', data.item, 1)
+    TriggerServerEvent('inventory:notifyImpendingRemoval', data.item, 1)
     TriggerServerEvent("esx:useItem", data.item.id)
-    TriggerEvent('disc-inventoryhud:refreshInventory')
+    TriggerEvent('inventory:refreshInventory')
     data.item.msg = 'Item Used'
     data.item.qty = 1
-    TriggerEvent('disc-inventoryhud:showItemUse', {
+    TriggerEvent('inventory:showItemUse', {
         data.item
     })
 end)
@@ -32,7 +32,7 @@ Citizen.CreateThread(function()
             end
         end
         if IsDisabledControlJustReleased(0, 37) then
-            ESX.TriggerServerCallback('disc-inventoryhud:GetItemsInSlotsDisplay', function(items)
+            ESX.TriggerServerCallback('inventory:GetItemsInSlotsDisplay', function(items)
                 SendNUIMessage({
                     action = 'showActionBar',
                     items = items
@@ -43,15 +43,15 @@ Citizen.CreateThread(function()
 end)
 
 function UseItem(slot)
-    ESX.TriggerServerCallback('disc-inventoryhud:UseItemFromSlot', function(item)
+    ESX.TriggerServerCallback('inventory:UseItemFromSlot', function(item)
         if item then
             if isWeapon(item.id) then
                 currentWeaponSlot = slot
             end
-            TriggerServerEvent('disc-inventoryhud:notifyImpendingRemoval', item, 1)
+            TriggerServerEvent('inventory:notifyImpendingRemoval', item, 1)
             TriggerServerEvent("esx:useItem", item.id)
             item.msg = 'Item Used'
-            TriggerEvent('disc-inventoryhud:showItemUse', {
+            TriggerEvent('inventory:showItemUse', {
                 item,
             })
         end
@@ -59,8 +59,8 @@ function UseItem(slot)
     , slot)
 end
 
-RegisterNetEvent('disc-inventoryhud:showItemUse')
-AddEventHandler('disc-inventoryhud:showItemUse', function(items)
+RegisterNetEvent('inventory:showItemUse')
+AddEventHandler('inventory:showItemUse', function(items)
     local data = {}
     for k, v in pairs(items) do
         table.insert(data, {
@@ -78,4 +78,3 @@ AddEventHandler('disc-inventoryhud:showItemUse', function(items)
         alerts = data
     })
 end)
-

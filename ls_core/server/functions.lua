@@ -1,16 +1,31 @@
 
+GetPlayers = function(source)
 
-function GetPlayers()
-    local players = {}
-    for a = 0, 40 do
-        if NetworkIsPlayerActive(a) then
-            table.insert(players, a)
-        end
-    end
-    return players
+	for k,v in pairs(X.Players) do
+		table.insert(sources, k)
+	end
+
+	return sources
+
 end
 
 
+GetPlayerFromIdentifier = function(identifier)
+	for k,v in pairs(players) do
+		if v.identifier == identifier then
+			return v
+		end
+	end
+end
+
+
+GetPlayerFromId = function(source)
+	return players[tonumber(source)]
+end
+
+GetItemInfo = function(item)
+
+end
 
 GetPlayerData = function(id)
     for a = 1, #players do
@@ -52,9 +67,6 @@ function stringsplit(inputstr, sep)
 	return t
 end
 
-
-
-
 ------ Zwraca ID wszystkich postacie dla danego konta
 
 GetPlayerCharacters = function(src)
@@ -69,8 +81,6 @@ GetPlayerCharacters = function(src)
           }, function(playerCharacters)
 
             return playerCharacters.data[1].id
-
-
 
           end)
 end
@@ -127,6 +137,7 @@ AddEventHandler("ls:debugCharacters", function(source)
   table.insert(characters, {id = 2, account_id = "steam:231123123", character_id = "7"})
 end)
 
+
 ---------------------------------
 
 --[[
@@ -151,13 +162,13 @@ end)
 ---------CALLBACKS--------------
 --------------------------------
 
-RegisterServerCallback = function(name, cb)
-	ServerCallbacks[name] = cb
+X.RegisterServerCallback = function(name, cb)
+	X.ServerCallbacks[name] = cb
 end
 
-TriggerServerCallback = function(name, requestId, source, cb, ...)
-	if ServerCallbacks[name] ~= nil then
-		ServerCallbacks[name](source, cb, ...)
+X.TriggerServerCallback = function(name, requestId, source, cb, ...)
+	if X.ServerCallbacks[name] ~= nil then
+		X.ServerCallbacks[name](source, cb, ...)
 	else
 		print('TriggerServerCallback => [' .. name .. '] does not exist')
 	end

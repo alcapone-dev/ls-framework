@@ -103,7 +103,7 @@ function closeInventory() {
     InventoryLog('Closing');
     EndDragging();
     $('.near-players-wrapper').fadeOut();
-    $.post("http://disc-inventoryhud/NUIFocusOff", JSON.stringify({}));
+    $.post("http://inventory/NUIFocusOff", JSON.stringify({}));
 }
 
 function inventorySetup(invOwner, items, money, invTier) {
@@ -286,7 +286,7 @@ $(document).ready(function () {
             itemData = $(draggingItem).find('.item').data("item");
             if (itemData.usable) {
                 InventoryLog('Using ' + itemData.label + ' and Close ' + itemData.closeUi);
-                $.post("http://disc-inventoryhud/UseItem", JSON.stringify({
+                $.post("http://inventory/UseItem", JSON.stringify({
                     owner: $(draggingItem).parent().data('invOwner'),
                     slot: $(draggingItem).data('slot'),
                     item: itemData
@@ -320,7 +320,7 @@ $(document).ready(function () {
             }
 
             if (itemData.canRemove) {
-                $.post("http://disc-inventoryhud/GetNearPlayers", JSON.stringify({
+                $.post("http://inventory/GetNearPlayers", JSON.stringify({
                     item: itemData,
                     action: 'give'
                 }));
@@ -362,7 +362,7 @@ $(document).ready(function () {
         $(this).removeClass('hover');
     }).click(function (event, ui) {
         InventoryLog('Seizing Cash from ' + destinationOwner);
-        $.post("http://disc-inventoryhud/SeizeCash", JSON.stringify({
+        $.post("http://inventory/SeizeCash", JSON.stringify({
             target: destinationOwner
         }));
     });
@@ -376,7 +376,7 @@ $(document).ready(function () {
         $(this).removeClass('hover');
     }).click(function (event, ui) {
         InventoryLog('Stealing Cash from ' + destinationOwner);
-        $.post("http://disc-inventoryhud/StealCash", JSON.stringify({
+        $.post("http://inventory/StealCash", JSON.stringify({
             target: destinationOwner
         }));
     });
@@ -392,7 +392,7 @@ $(document).ready(function () {
 
             if (itemData.canRemove) {
                 InventoryLog('Dropping ' + dropCount + ' ' + itemData.label + ' On Ground');
-                $.post("http://disc-inventoryhud/DropItem", JSON.stringify({
+                $.post("http://inventory/DropItem", JSON.stringify({
                     item: itemData,
                     qty: dropCount
                 }));
@@ -484,7 +484,7 @@ $(document).ready(function () {
 });
 
 $('.popup-body').on('click', '.cashchoice', function () {
-    $.post("http://disc-inventoryhud/GetNearPlayers", JSON.stringify({
+    $.post("http://inventory/GetNearPlayers", JSON.stringify({
         action: 'pay',
         item: $(this).data("id")
     }));
@@ -511,7 +511,7 @@ function AttemptDropInEmptySlot(origin, destination, moveQty) {
             successAudio.play();
 
             InventoryLog('1Moving ' + item.qty + ' ' + item.label + ' ' + ' From ' + origin.data('invOwner') + ' Slot ' + origin.data('slot') + ' To ' + destination.parent().data('invOwner') + ' Slot ' + item.slot);
-            $.post("http://disc-inventoryhud/MoveToEmpty", JSON.stringify({
+            $.post("http://inventory/MoveToEmpty", JSON.stringify({
                 originOwner: origin.parent().data('invOwner'),
                 originSlot: origin.data('slot'),
                 originTier: origin.parent().data('invTier'),
@@ -533,7 +533,7 @@ function AttemptDropInEmptySlot(origin, destination, moveQty) {
             successAudio.play();
 
             InventoryLog('Empty: Moving ' + moveQty + ' ' + item.label + ' From ' + origin.data('invOwner') + ' Slot ' + item.slot + ' To ' + destination.parent().data('invOwner') + ' Slot ' + item2.slot);
-            $.post("http://disc-inventoryhud/EmptySplitStack", JSON.stringify({
+            $.post("http://inventory/EmptySplitStack", JSON.stringify({
                 originOwner: origin.parent().data('invOwner'),
                 originSlot: origin.data('slot'),
                 originTier: origin.parent().data('invTier'),
@@ -587,7 +587,7 @@ function AttemptDropInOccupiedSlot(origin, destination, moveQty) {
 
                 successAudio.play();
                 InventoryLog('Non-Empty: Moving ' + moveQty + ' ' + originItem.label + ' In ' + origin.data('invOwner') + ' Slot ' + originItem.slot + ' To ' + destination.parent().data('invOwner') + ' Slot' + destinationItem.slot);
-                $.post("http://disc-inventoryhud/SplitStack", JSON.stringify({
+                $.post("http://inventory/SplitStack", JSON.stringify({
                     originOwner: origin.parent().data('invOwner'),
                     originTier: origin.parent().data('invTier'),
                     originSlot: originItem.slot,
@@ -610,7 +610,7 @@ function AttemptDropInOccupiedSlot(origin, destination, moveQty) {
                     successAudio.play();
 
                     InventoryLog('Swapping ' + originItem.label + ' In  ' + destination.parent().data('invOwner') + ' Slot ' + originItem.slot + ' With ' + destinationItem.label + ' In ' + origin.data('invOwner') + ' Slot ' + destinationItem.slot);
-                    $.post("http://disc-inventoryhud/SwapItems", JSON.stringify({
+                    $.post("http://inventory/SwapItems", JSON.stringify({
                         originOwner: origin.parent().data('invOwner'),
                         originItem: origin.find('.item').data('item'),
                         originSlot: origin.data('slot'),
@@ -628,7 +628,7 @@ function AttemptDropInOccupiedSlot(origin, destination, moveQty) {
 
                     successAudio.play();
                     InventoryLog('Merging Stack Of ' + originItem.label + ' In ' + origin.data('invOwner') + ' Slot ' + originItem.slot + ' To ' + destination.parent().data('invOwner') + ' Slot' + destinationItem.slot);
-                    $.post("http://disc-inventoryhud/CombineStack", JSON.stringify({
+                    $.post("http://inventory/CombineStack", JSON.stringify({
                         originOwner: origin.parent().data('invOwner'),
                         originSlot: origin.data('slot'),
                         originTier: origin.parent().data('invTier'),
@@ -651,7 +651,7 @@ function AttemptDropInOccupiedSlot(origin, destination, moveQty) {
                     successAudio.play();
 
                     InventoryLog('Adding ' + originItem.label + ' To Existing Stack In Inventory ' + destination.parent().data('invOwner') + ' Slot ' + destinationItem.slot);
-                    $.post("http://disc-inventoryhud/TopoffStack", JSON.stringify({
+                    $.post("http://inventory/TopoffStack", JSON.stringify({
                         originOwner: origin.parent().data('invOwner'),
                         originItem: origin.find('.item').data('item'),
                         originSlot: originItem.slot,
@@ -679,7 +679,7 @@ function AttemptDropInOccupiedSlot(origin, destination, moveQty) {
 
             InventoryLog('Swapping ' + originItem.label + ' In ' + destination.parent().data('invOwner') + ' Slot ' + originItem.slot + ' With ' + destinationItem.label + ' In ' + origin.data('invOwner') + ' Slot ' + destinationItem.slot);
             //InventoryLog("SwapItems2 : Origin: " + origin.data('invOwner') + " Origin Slot: " + origin.data('slot') + " Destination: " + destination.parent().data('invOwner') + " Destination Slot: " + destination.data('slot'));
-            $.post("http://disc-inventoryhud/SwapItems", JSON.stringify({
+            $.post("http://inventory/SwapItems", JSON.stringify({
                 originOwner: origin.parent().data('invOwner'),
                 originItem: origin.find('.item').data('item'),
                 originSlot: origin.data('slot'),
@@ -792,7 +792,7 @@ $('.popup-body').on('click', '.player', function () {
                 count = givingItem.qty
             }
             InventoryLog(`Giving ${count} ${givingItem.label} To Nearby Player With Server ID ${target}`);
-            $.post("http://disc-inventoryhud/GiveItem", JSON.stringify({
+            $.post("http://inventory/GiveItem", JSON.stringify({
                 target: target,
                 item: givingItem,
                 count: count
@@ -810,7 +810,7 @@ $('.popup-body').on('click', '.player', function () {
         }
     } else if (action === "nearPlayersPay") {
         InventoryLog(`Giving ${count} ${givingItem} To Nearby Player With Server ID ${target}`);
-        $.post("http://disc-inventoryhud/GiveCash", JSON.stringify({
+        $.post("http://inventory/GiveCash", JSON.stringify({
             target: target,
             item: givingItem,
             count: count

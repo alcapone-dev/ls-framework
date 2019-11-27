@@ -14,7 +14,8 @@ dependencies {
 
 server_scripts {
 	'server/server.lua',
-	'server/functions.lua'
+	'server/functions.lua',
+  'server/items.lua'
 
 }
 
@@ -31,41 +32,12 @@ server_export "GetPlayerData"
 
 
 --- inventory
-
 client_scripts {
-    'inventory/client/main.lua',
-    'inventory/config.lua',
-    'inventory/client/actions.lua',
-    'inventory/client/inventory.lua',
-    'inventory/client/drop.lua',
-    'inventory/client/trunk.lua',
-    'inventory/client/glovebox.lua',
-    'inventory/client/shop.lua',
-    'inventory/client/weapons.lua',
-    'inventory/client/search.lua',
-    'inventory/client/stash.lua',
-    'inventory/common/drop.lua',
-    'inventory/common/weapons.lua',
-    'inventory/utils.lua'
+
 }
 
 server_scripts {
-    'inventory/server/drop.lua',
-    'inventory/server/main.lua',
-    'inventory/config.lua',
-    'inventory/server/actions.lua',
-    'inventory/server/inventory.lua',
-    'inventory/server/player.lua',
-    'inventory/server/trunk.lua',
-    'inventory/server/glovebox.lua',
-    'inventory/server/shop.lua',
-    'inventory/server/weapons.lua',
-    'inventory/server/search.lua',
-    'inventory/server/stash.lua',
-    'inventory/server/itemdata.lua',
-    'inventory/common/drop.lua',
-    'inventory/common/weapons.lua',
-    'inventory/utils.lua'
+
 }
 
 files {

@@ -42,7 +42,7 @@ Citizen.CreateThread(function()
     end
 end)
 
-RegisterNetEvent('disc-inventoryhud:updateDrops')
-AddEventHandler('disc-inventoryhud:updateDrops', function(newDrops)
+RegisterNetEvent('inventory:updateDrops')
+AddEventHandler('inventory:updateDrops', function(newDrops)
     serverDrops = newDrops
 end)

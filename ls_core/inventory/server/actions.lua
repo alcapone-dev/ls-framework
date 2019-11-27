@@ -1,5 +1,5 @@
-ESX.RegisterServerCallback('disc-inventoryhud:UseItemFromSlot', function(source, cb, slot)
-    local player = ESX.GetPlayerFromId(source)
+RegisterServerCallback('inventory:UseItemFromSlot', function(source, cb, slot)
+    local player = GetPlayerFromId(source)
     InvType['player'].getInventory(player.identifier, function(inventory)
         if inventory[tostring(slot)] then
             local esxItem = player.getInventoryItem(inventory[tostring(slot)].name)
@@ -11,7 +11,7 @@ ESX.RegisterServerCallback('disc-inventoryhud:UseItemFromSlot', function(source,
         cb(nil)
     end)
 end)
-ESX.RegisterServerCallback('disc-inventoryhud:GetItemsInSlotsDisplay', function(source, cb)
+RegisterServerCallback('inventory:GetItemsInSlotsDisplay', function(source, cb)
     local player = ESX.GetPlayerFromId(source)
     InvType['player'].getInventory(player.identifier, function(inventory)
         local slotItems = {}
@@ -32,5 +32,3 @@ ESX.RegisterServerCallback('disc-inventoryhud:GetItemsInSlotsDisplay', function(
         cb(slotItems)
     end)
 end)
-
-

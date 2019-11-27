@@ -9,6 +9,7 @@ Citizen.CreateThread(function()
     --TriggerServerEvent("DRP_Core:ConnectionSetWeather")
 end)
 
+
 RegisterCommand('print', function(source)
 
   local source = GetPlayerServerId()
@@ -33,7 +34,22 @@ RegisterCommand('fff', function(source)
 
 end, false)
 
+RegisterCommand('playerdata', function(source)
 
+    local source = GetPlayerServerId()
+    TriggerServerEvent("client:PlayerData", source)
+
+end, false)
+
+
+
+RegisterNetEvent("DRP_ID:LoadSelectedCharacter")
+AddEventHandler("DRP_ID:LoadSelectedCharacter", function(ped, spawn, spawnInHotel)
+	characterSpawnedIn = true
+	exports["spawnmanager"]:spawnPlayer({x = spawn[1], y = spawn[2], z = spawn[3], heading = 0.0, model = ped})
+	Citizen.Wait(4000)
+	local ped = GetPlayerPed(PlayerId())
+end)
 
 
 ---------------------------------------------------------------------------

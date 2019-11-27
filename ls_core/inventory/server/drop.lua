@@ -1,7 +1,7 @@
 local drops = {}
 
 Citizen.CreateThread(function()
-    TriggerEvent('disc-inventoryhud:RegisterInventory', {
+    TriggerEvent('inventory:RegisterInventory', {
         name = 'drop',
         label = 'Drop',
         slots = 10
@@ -20,39 +20,38 @@ Citizen.CreateThread(function()
         for k, v in pairs(results) do
             drops[v.owner] = json.decode(v.data)
         end
-        TriggerClientEvent('disc-inventoryhud:updateDrops', -1, drops)
+        TriggerClientEvent('inventory:updateDrops', -1, drops)
     end)
 end)
 
-RegisterServerEvent('disc-inventoryhud:modifiedInventory')
-AddEventHandler('disc-inventoryhud:modifiedInventory', function(identifier, type, data)
+RegisterServerEvent('inventory:modifiedInventory')
+AddEventHandler('inventory:modifiedInventory', function(identifier, type, data)
     if type == 'drop' then
         drops[identifier] = data
-        TriggerClientEvent('disc-inventoryhud:updateDrops', -1, drops)
+        TriggerClientEvent('inventory:updateDrops', -1, drops)
     end
 end)
 
-RegisterServerEvent('disc-inventoryhud:savedInventory')
-AddEventHandler('disc-inventoryhud:savedInventory', function(identifier, type, data)
+RegisterServerEvent('inventory:savedInventory')
+AddEventHandler('inventory:savedInventory', function(identifier, type, data)
     if type == 'drop' then
         drops[identifier] = data
-        TriggerClientEvent('disc-inventoryhud:updateDrops', -1, drops)
+        TriggerClientEvent('inventory:updateDrops', -1, drops)
     end
 end)
 
-RegisterServerEvent('disc-inventoryhud:createdInventory')
-AddEventHandler('disc-inventoryhud:createdInventory', function(identifier, type, data)
+RegisterServerEvent('inventory:createdInventory')
+AddEventHandler('inventory:createdInventory', function(identifier, type, data)
     if type == 'drop' then
         drops[identifier] = data
-        TriggerClientEvent('disc-inventoryhud:updateDrops', -1, drops)
+        TriggerClientEvent('inventory:updateDrops', -1, drops)
     end
 end)
 
-RegisterServerEvent('disc-inventoryhud:deletedInventory')
-AddEventHandler('disc-inventoryhud:deletedInventory', function(identifier, type)
+RegisterServerEvent('inventory:deletedInventory')
+AddEventHandler('inventory:deletedInventory', function(identifier, type)
     if type == 'drop' then
         drops[identifier] = nil
-        TriggerClientEvent('disc-inventoryhud:updateDrops', -1, drops)
+        TriggerClientEvent('inventory:updateDrops', -1, drops)
     end
 end)
-

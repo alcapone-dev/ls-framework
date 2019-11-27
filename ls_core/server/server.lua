@@ -134,6 +134,8 @@ AddEventHandler('debug:printTables', function(source)
  local src = source
  print(GetPlayerCharacters(src))
  print(GetActiveCharacter(src))
+ print(GetItemInfo("phone"))
+ print(removeCash(1))
  print("Players Table: \t"..json.encode(players).."\n")
  print("Characters Table: \t"..json.encode(characters).."\n")
 
@@ -162,5 +164,14 @@ AddEventHandler("playerDropped", function(reason)
   saveInventory(playerid, 'player')
 
   print('LS-Story > Gracz '..playerName..'(ID:'..src..') wyszedl, powod: '..reason)
+
+end)
+
+RegisterServerEvent("client:PlayerData")
+AddEventHandler('client:PlayerData', function(source)
+  local source = src
+
+  local PlayerData = GetPlayerData(src)
+  return PlayerData
 
 end)
