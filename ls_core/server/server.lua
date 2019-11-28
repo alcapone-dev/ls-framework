@@ -1,4 +1,5 @@
 RegisterServerEvent("core:Player:Joined")
+RegisterServerEvent("core:Player:GetCharacters")
 RegisterServerEvent("core:Player:SelectedCharacter")
 
 
@@ -76,6 +77,25 @@ AddEventHandler("core:Player:Joined", function()
     end)
 end)
 
+AddEventHandler("core:Player:GetCharacters", function()
+
+exports["externalsql"]:DBAsyncQuery({
+  string = "SELECT id FROM `characters` WHERE `account_id` = :steamID",
+  data = {
+      steamID = PlayerIdentifier("steam", source)
+  }
+}, function(results)
+  print(results.data[1])
+
+  print(Player:GetCharacters(results.data[1].id))
+  Player:GetCharacters(results.data[1].id)
+
+
+end)
+
+end)
+
+
 AddEventHandler("core:Player:SelectedCharacter", function()
 
   local src = source
@@ -119,6 +139,7 @@ end)
 
 RegisterServerEvent("client:GetSource")
 AddEventHandler('client:GetSource', function(source)
+  print(Player:GetCharacters(source))
   print(Player:GetSource(source))
   print(Player:GetSteamID(source))
 end)

@@ -82,7 +82,7 @@ Player = class()
 		self.last_login = last_login
 		self.created_at = created_at
 		self.updated_at = updated_at
-		self.characters = characters
+		self.characters = {characters}
 		print('works')
     end
     
@@ -102,18 +102,30 @@ function Player:IsBanned(source)
 	return self.banned
 end
 
+function Player:GetCharacters(source)
+    exports["externalsql"]:DBAsyncQuery({
+        string = "SELECT id FROM `characters` WHERE `account_id` = :steamID",
+        data = {
+            steamID = PlayerIdentifier("steam", source)
+        }
+      }, function(results)
+        self.characters = results.data.id
+    return self.characters
+      end)
+end 
+
 function Player:LoggedIn(source, steamID)
     self.source = source
     self.steamID = steamID
 	table.insert(Players, {source = self.source, steamID = self.steamID})
 end
 
+
 function Player:LoggedOut(source)
     self.source = source
         for i, source in pairs(Players) do
             table.remove(Players, i)
         end 
-		print(json.encode(Players))
 end
 
 -------------------------
