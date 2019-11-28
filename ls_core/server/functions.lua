@@ -131,12 +131,6 @@ GetPlayerItems = function(src)
 ---------------------------------
 -------------DEBUGS--------------
 ---------------------------------
-RegisterServerEvent("ls:debugCharacters")
-AddEventHandler("ls:debugCharacters", function(source)
-
-  table.insert(characters, {id = 2, account_id = "steam:231123123", character_id = "7"})
-end)
-
 
 ---------------------------------
 
@@ -161,15 +155,3 @@ end)
 --------------------------------
 ---------CALLBACKS--------------
 --------------------------------
-
-X.RegisterServerCallback = function(name, cb)
-	X.ServerCallbacks[name] = cb
-end
-
-X.TriggerServerCallback = function(name, requestId, source, cb, ...)
-	if X.ServerCallbacks[name] ~= nil then
-		X.ServerCallbacks[name](source, cb, ...)
-	else
-		print('TriggerServerCallback => [' .. name .. '] does not exist')
-	end
-end

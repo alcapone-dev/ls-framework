@@ -18,6 +18,18 @@ RegisterCommand('print', function(source)
 
 end, false)
 
+RegisterCommand("de", function(args, args2)
+
+TriggerServerEvent("debug:de", args, args2)
+
+end)
+
+RegisterCommand("te", function(source)
+
+TriggerServerEvent("debug:te", source)
+
+end)
+
 RegisterCommand('cb', function(source)
 
   TriggerServerEvent("ls:GetCharacterData", function(source, callback)
@@ -41,6 +53,12 @@ RegisterCommand('playerdata', function(source)
 
 end, false)
 
+RegisterCommand('source', function(source)
+
+  local source = GetPlayerServerId()
+  TriggerServerEvent("client:GetSource", source)
+
+end, false)
 
 
 RegisterNetEvent("DRP_ID:LoadSelectedCharacter")

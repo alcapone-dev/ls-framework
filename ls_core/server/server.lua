@@ -1,4 +1,4 @@
-local players = {}
+--local players = {}
 characters = {}
 
 
@@ -70,15 +70,16 @@ AddEventHandler("ls:AddPlayerToTable", function()
           }, function(playerResults)
             print("mysql > "..json.encode(playerResults))
 
-    local playerid = playerResults.data[1].steamID
-	  table.insert(players, {id = src, playerid = playerid})
 
-    loadInventory(playerid, 'player', function()
+    --[[local playerid = playerResults.data[1].steamID
+	  table.insert(players, {id = src, playerid = playerid}) ]]--
 
+    print(src)
+    print(playerResults.data[1].steamID)
+    Player:LoggedIn(src, playerResults.data[1].steamID)
     end)
 
     end)
-end)
 
 RegisterServerEvent("ls:AddPlayerCharacterToTable")
 AddEventHandler("ls:AddPlayerCharacterToTable", function()
@@ -132,12 +133,7 @@ RegisterServerEvent("debug:printTables")
 AddEventHandler('debug:printTables', function(source)
 
  local src = source
- print(GetPlayerCharacters(src))
- print(GetActiveCharacter(src))
- print(GetItemInfo("phone"))
- print(removeCash(1))
- print("Players Table: \t"..json.encode(players).."\n")
- print("Characters Table: \t"..json.encode(characters).."\n")
+  print(json.encode(Players))
 
 
 end)
@@ -148,6 +144,9 @@ end)
 ----------------------------
 
 AddEventHandler("playerDropped", function(reason)
+
+
+  --[[
 
   local src = source
   local playerid = PlayerIdentifier("steam", src)
@@ -160,18 +159,24 @@ AddEventHandler("playerDropped", function(reason)
   for i, playerid in pairs(characters) do
     table.remove(characters, i)
   end
+  ]]--
+
+  Player:LoggedOut(source)
 
   saveInventory(playerid, 'player')
 
-  print('LS-Story > Gracz '..playerName..'(ID:'..src..') wyszedl, powod: '..reason)
+  print('LS-Story > Gracz '..playerName..'(ID:'..source..') wyszedl, powod: '..reason)
 
 end)
 
 RegisterServerEvent("client:PlayerData")
 AddEventHandler('client:PlayerData', function(source)
-  local source = src
 
-  local PlayerData = GetPlayerData(src)
-  return PlayerData
 
+end)
+
+RegisterServerEvent("client:GetSource")
+AddEventHandler('client:GetSource', function(source)
+  print(Player:GetSource(source))
+  print(Player:GetSteamID(source))
 end)

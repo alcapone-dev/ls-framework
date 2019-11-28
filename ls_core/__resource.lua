@@ -15,7 +15,9 @@ dependencies {
 server_scripts {
 	'server/server.lua',
 	'server/functions.lua',
-  'server/items.lua'
+  'server/items.lua',
+  'server/classes/callbacks.lua',
+  'server/classes/player.lua'
 
 }
 
@@ -29,6 +31,10 @@ client_scripts {
 server_export "GetPlayerData"
 
 
+---- Libs
+server_scripts {
+  'libs/class.lua'
+}
 
 
 --- inventory
