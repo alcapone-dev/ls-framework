@@ -71,7 +71,7 @@ Players = {}
 Characters = {}
 
 Player = class()
-	function Player.__init()
+	function Player:__init()
 		self.source = source
 		self.id = id
 		self.steamID = steamID
@@ -84,14 +84,18 @@ Player = class()
 		self.updated_at = updated_at
 		self.characters = characters
 		print('works')
-	end
+    end
+    
+function Player:GetData(source)
+    return self.source, self.id, self.steamID, self.permission, self.banned, self.ban_time, self.last_ip, self.last_login, self.created_at, self.updated_at, self.characters
+end
 
 function Player:GetSource(source)
     return self.source
 end
 
 function Player:GetSteamID(source)
-	return self.steamID
+    return self.steamID
 end
 
 function Player:IsBanned(source)
@@ -99,14 +103,16 @@ function Player:IsBanned(source)
 end
 
 function Player:LoggedIn(source, steamID)
-	self.source = source
-	self.steamID = steamID
+    self.source = source
+    self.steamID = steamID
 	table.insert(Players, {source = self.source, steamID = self.steamID})
 end
 
 function Player:LoggedOut(source)
-		self.source = source
-		table.remove(Players, self.source)
+    self.source = source
+        for i, source in pairs(Players) do
+            table.remove(Players, i)
+        end 
 		print(json.encode(Players))
 end
 
@@ -115,7 +121,23 @@ end
 -------------------------
 
 Character = class()
-	function Character.__init()
-
-
+    function Character:__init()
+        self.id = char.id
+        self.account_id = char.account_id
+        self.first_name = char.first_name
+        self.last_name = char.last_name
+        self.sex = char.sex
+        self.dob = char.dob
+        self.skin = char.skin
+        self.clothing = char.clothing
+        self.props = char.props
+        self.tattoos = char.tattoos
+        self.lastLocation = char.lastLocation
+        self.health = char.health
+        self.isDead = char.isDead
+        self.cash = char.cash
+        self.bank = char.bank
+        self.job = char.job
+        self.job_grade = char.job_grade
+        self.duty = char.duty
 	end

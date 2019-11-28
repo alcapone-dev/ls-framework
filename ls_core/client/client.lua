@@ -4,8 +4,8 @@
 
 Citizen.CreateThread(function()
     print('elo')
-    TriggerServerEvent("ls:AddPlayerToTable")
-    TriggerServerEvent("ls:AddPlayerCharacterToTable")
+    TriggerServerEvent("core:Player:Joined")
+    --TriggerServerEvent("ls:AddPlayerCharacterToTable")
     --TriggerServerEvent("DRP_Core:ConnectionSetWeather")
 end)
 

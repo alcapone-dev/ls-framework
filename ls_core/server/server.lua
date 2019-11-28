@@ -1,3 +1,8 @@
+RegisterServerEvent("core:Player:Joined")
+RegisterServerEvent("core:Player:SelectedCharacter")
+
+
+
 --local players = {}
 characters = {}
 
@@ -57,32 +62,21 @@ AddEventHandler('playerConnecting', function(playerName, setKickReason, deferral
 
 
 
-RegisterServerEvent("ls:AddPlayerToTable")
-AddEventHandler("ls:AddPlayerToTable", function()
 
+AddEventHandler("core:Player:Joined", function()
     local src = source
-
     exports["externalsql"]:DBAsyncQuery({
               string = "SELECT * FROM `accounts` WHERE `steamID` = :steamID",
               data = {
                   steamID = PlayerIdentifier("steam", src)
               }
-          }, function(playerResults)
-            print("mysql > "..json.encode(playerResults))
-
-
-    --[[local playerid = playerResults.data[1].steamID
-	  table.insert(players, {id = src, playerid = playerid}) ]]--
-
-    print(src)
-    print(playerResults.data[1].steamID)
-    Player:LoggedIn(src, playerResults.data[1].steamID)
+          }, function(results)
+            print("mysql > "..json.encode(results))
+    Player:LoggedIn(src, results.data[1].steamID)
     end)
+end)
 
-    end)
-
-RegisterServerEvent("ls:AddPlayerCharacterToTable")
-AddEventHandler("ls:AddPlayerCharacterToTable", function()
+AddEventHandler("core:Player:SelectedCharacter", function()
 
   local src = source
 
@@ -94,36 +88,11 @@ AddEventHandler("ls:AddPlayerCharacterToTable", function()
         }, function(character)
           print("mysql > "..json.encode(character))
 
-      --table.insert(characters, {id = src, character_id = character.data[1].id, account_id = character.data[1].account_id})
-      table.insert(characters, {id = src, account_id = character.data[1].account_id, character_id = character.data[1].id})
+      --table.insert(characters, {id = src, account_id = character.data[1].account_id, character_id = character.data[1].id})
 
 
     end)
   end)
-
---------------------------------
----------GetPlayerData----------
---------------------------------
-
-AddEventHandler("ls:GetPlayerData", function(id, callback)
-	for a = 1, #players do
-        if players[a].id == id then
-			  callback(players[a])
-			return
-        end
-    end
-    callback(false)
-end)
-
-AddEventHandler("ls:GetCharacterData", function(id, callback)
-	for a = 1, #characters do
-        if characters[a].id == id then
-			  callback(characters[a])
-			return
-        end
-    end
-    callback(false)
-end)
 
 -----------------------------
 ------DEBUGS-----------------
@@ -132,7 +101,7 @@ end)
 RegisterServerEvent("debug:printTables")
 AddEventHandler('debug:printTables', function(source)
 
- local src = source
+  local src = source
   print(json.encode(Players))
 
 
@@ -144,36 +113,9 @@ end)
 ----------------------------
 
 AddEventHandler("playerDropped", function(reason)
-
-
-  --[[
-
-  local src = source
-  local playerid = PlayerIdentifier("steam", src)
-  local playerName = GetPlayerName(src)
-
-  for i, playerid in pairs(players) do
-    table.remove(players, i)
-  end
-
-  for i, playerid in pairs(characters) do
-    table.remove(characters, i)
-  end
-  ]]--
-
   Player:LoggedOut(source)
-
-  saveInventory(playerid, 'player')
-
-  print('LS-Story > Gracz '..playerName..'(ID:'..source..') wyszedl, powod: '..reason)
-
 end)
 
-RegisterServerEvent("client:PlayerData")
-AddEventHandler('client:PlayerData', function(source)
-
-
-end)
 
 RegisterServerEvent("client:GetSource")
 AddEventHandler('client:GetSource', function(source)
