@@ -20,7 +20,7 @@ ExternalConfig.API = {
   secret: "lsstory"
 };
 
-ExternalConfig.DevModeActive = true;
+ExternalConfig.DevModeActive = false;
 
 module.exports.config = ExternalConfig;
 module.exports.server = ExternalConfig.Server;

@@ -103,15 +103,13 @@ function Player:IsBanned(source)
 end
 
 function Player:GetCharacters(source)
-    exports["externalsql"]:DBAsyncQuery({
-        string = "SELECT id FROM `characters` WHERE `account_id` = :steamID",
-        data = {
-            steamID = PlayerIdentifier("steam", source)
-        }
-      }, function(results)
-        self.characters = results.data.id
     return self.characters
-      end)
+end 
+
+function Player:SetCharacters(source, characters)
+    self.source = source
+    self.characters = characters
+    table.insert(Characters, {source = self.source, characters = self.characters})
 end 
 
 function Player:LoggedIn(source, steamID)
@@ -152,4 +150,8 @@ Character = class()
         self.job = char.job
         self.job_grade = char.job_grade
         self.duty = char.duty
-	end
+    end
+    
+    function Character:GetCharacterId()
+        return self.id
+    end 

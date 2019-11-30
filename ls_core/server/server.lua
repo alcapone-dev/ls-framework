@@ -74,10 +74,23 @@ AddEventHandler("core:Player:Joined", function()
           }, function(results)
             print("mysql > "..json.encode(results))
     Player:LoggedIn(src, results.data[1].steamID)
-    end)
-end)
+          end)
 
-AddEventHandler("core:Player:GetCharacters", function()
+    exports["externalsql"]:DBAsyncQuery({
+      string = "SELECT id FROM `characters` WHERE `account_id` = :steamID",
+      data = {
+          steamID = PlayerIdentifier("steam", source)
+      }
+    }, function(results)
+      local characters = results.data
+      Player:SetCharacters(source, characters)
+    
+    
+    end)
+
+end)
+--[[
+AddEventHandler("core:Player:GetCharacters", function(source)
 
 exports["externalsql"]:DBAsyncQuery({
   string = "SELECT id FROM `characters` WHERE `account_id` = :steamID",
@@ -85,15 +98,14 @@ exports["externalsql"]:DBAsyncQuery({
       steamID = PlayerIdentifier("steam", source)
   }
 }, function(results)
-  print(results.data[1])
-
-  print(Player:GetCharacters(results.data[1].id))
-  Player:GetCharacters(results.data[1].id)
+  local characters = results.data
+  Player:SetCharacters(source, characters)
 
 
 end)
 
 end)
+]]--
 
 
 AddEventHandler("core:Player:SelectedCharacter", function()
@@ -123,7 +135,7 @@ AddEventHandler('debug:printTables', function(source)
 
   local src = source
   print(json.encode(Players))
-
+  print(json.encode(Characters))
 
 end)
 
@@ -139,7 +151,8 @@ end)
 
 RegisterServerEvent("client:GetSource")
 AddEventHandler('client:GetSource', function(source)
-  print(Player:GetCharacters(source))
+  print('penis')
   print(Player:GetSource(source))
   print(Player:GetSteamID(source))
+  print(json.encode(Player:GetCharacters(source)))
 end)

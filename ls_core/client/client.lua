@@ -56,6 +56,7 @@ end, false)
 RegisterCommand('source', function(source)
 
   local source = GetPlayerServerId()
+  TriggerServerEvent("core:Player:GetCharacters", source)
   TriggerServerEvent("client:GetSource", source)
 
 end, false)
