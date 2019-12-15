@@ -13,6 +13,7 @@ dependencies {
 
 
 server_scripts {
+  'config.lua',
 	'server/server.lua',
 	'server/functions.lua',
   'server/items.lua',

@@ -1,6 +1,10 @@
 RegisterServerEvent("core:Player:Joined")
 RegisterServerEvent("core:Player:GetCharacters")
 RegisterServerEvent("core:Player:SelectedCharacter")
+RegisterServerEvent("core:Player:SwitchedCharacter")
+RegisterServerEvent("core:Player:CreateCharacter")
+RegisterServerEvent("core:Player:DeleteCharacter")
+
 
 
 
@@ -30,14 +34,16 @@ AddEventHandler('playerConnecting', function(playerName, setKickReason, deferral
       ---
 
       if #results['data'] >= 1 then
-        print("Gracz " .. PlayerIdentifier("steam", src) .. " jest w bazie")
+        --print("Gracz " .. PlayerIdentifier("steam", src) .. " jest w bazie")
         exports["externalsql"]:DBAsyncQuery({
                 string = "UPDATE `accounts` SET last_login=CURRENT_TIMESTAMP WHERE `steamID` = :steamID",
                 data = {
                     steamID = PlayerIdentifier("steam", src)
                 }
             })
-            return
+            return if Config.DebugMode == true then 
+              print("Gracz " .. data.steamID .. " jest w bazie")
+            end
 
         --
         -- IF PLAYER NOT EXIST
@@ -51,7 +57,10 @@ AddEventHandler('playerConnecting', function(playerName, setKickReason, deferral
                   steamID = PlayerIdentifier("steam", src)
               }
           })
-        print("Gracz " .. PlayerIdentifier("steam", src).. " zostal dodany")
+
+          if Config.DebugMode == true then
+            print("Gracz " .. PlayerIdentifier("steam", src).. " zostal dodany")
+          end 
 
       end
 
@@ -124,6 +133,24 @@ AddEventHandler("core:Player:SelectedCharacter", function()
 
 
     end)
+  end)
+
+  AddEventHandler("core:Player:SwitchedCharacter", function()
+
+    --- todo
+
+  end)
+
+  AddEventHandler("core:Player:DeleteCharacter", function()
+  
+    --- todo
+  
+  end)
+
+  AddEventHandler("core:Player:CreateCharacter", function()
+
+    --- todo 
+
   end)
 
 -----------------------------
